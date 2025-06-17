@@ -1,87 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MR RABBIT WhatsApp Bot Panel</title>
+  <title>🐇 Rabbit XMD Pair & DP</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #000000, #1e1e1e);
-      color: #00ff9f;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      padding: 20px;
+      background: #0e0e0e;
+      color: #00ff9d;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      padding: 40px;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-    }
-    form {
-      background-color: #111;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #00ff9f33;
-      margin: 15px 0;
-      width: 100%;
-      max-width: 400px;
-    }
-    input[type="text"], input[type="file"] {
-      width: 100%;
+    input, button {
       padding: 10px;
+      margin: 10px;
       border-radius: 6px;
       border: none;
-      margin: 10px 0;
-      background: #222;
-      color: #fff;
+      font-size: 16px;
     }
-    button {
-      background: #00ff9f;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
+    #pairSection, #dpSection {
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #00ff9d;
+      border-radius: 10px;
+      display: inline-block;
+      width: 80%;
+      max-width: 500px;
+      background: #1a1a1a;
     }
-    button:hover {
-      background: #00cc80;
-    }
-    hr {
-      border: 1px solid #00ff9f44;
-      width: 100%;
-      max-width: 400px;
-      margin: 20px 0;
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 0.9em;
-      color: #888;
+    pre {
+      background: #000;
+      padding: 10px;
+      border-radius: 5px;
+      color: #00ff9d;
     }
   </style>
 </head>
 <body>
-  <h1>🐇 RABBIT XMD BOT PANEL</h1>
+  <h1>🐇 Rabbit XMD - Pair Your Bot</h1>
 
-  <form method="GET" action="/">
-    <label for="number">🔢 Enter WhatsApp Number:</label>
-    <input name="number" type="text" placeholder="e.g. 919XXXXXXXXX" required />
-    <button type="submit">🔗 Get Pair Code</button>
-  </form>
+  <div id="pairSection">
+    <h3>Enter Phone Number (with country code)</h3>
+    <input type="text" id="phone" placeholder="e.g., 917439382677" required />
+    <br />
+    <button onclick="getPairCode()">🔗 Get Pair Code</button>
+    <div id="codeResult"></div>
+  </div>
 
-  <hr/>
+  <div id="dpSection" style="display:none;">
+    <h3>Upload New DP</h3>
+    <form id="dpForm" enctype="multipart/form-data">
+      <input type="file" name="dp" accept="image/*" required />
+      <br />
+      <button type="submit">⬆️ Upload DP</button>
+    </form>
+    <pre id="dpResult"></pre>
+  </div>
 
-  <form method="POST" action="/upload-dp" enctype="multipart/form-data">
-    <label for="photo">🖼️ Upload Profile Picture:</label>
-    <input type="file" name="photo" accept="image/*" required />
-    <button type="submit">📤 Upload & Set DP</button>
-  </form>
+  <script>
+    async function getPairCode() {
+      const phone = document.getElementById("phone").value.trim();
+      if (!phone) return alert("Please enter your phone number.");
 
-  <div class="footer">Made with ❤️ by MR RABBIT</div>
+      document.getElementById("codeResult").innerText = "⌛ Generating pair code...";
+
+      const res = await fetch(`/pair?number=${phone}`);
+      const json = await res.json();
+
+      if (json.code) {
+        document.getElementById("codeResult").innerHTML = `
+          <h4>🔗 Pair Code:</h4>
+          <pre>${json.code}</pre>
+          <p>Open WhatsApp Web and paste the above code.</p>
+        `;
+        document.getElementById("dpSection").style.display = "block";
+      } else {
+        document.getElementById("codeResult").innerText = "❌ Failed to get code.";
+      }
+    }
+
+    document.getElementById("dpForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(document.getElementById("dpForm"));
+      document.getElementById("dpResult").innerText = "⌛ Uploading...";
+
+      const res = await fetch("/upload-dp", {
+        method: "POST",
+        body: data
+      });
+
+      const json = await res.json();
+      document.getElementById("dpResult").innerText = JSON.stringify(json, null, 2);
+    });
+  </script>
 </body>
 </html>
