@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MR RABBIT WhatsApp Bot Panel</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #000000, #1e1e1e);
+      color: #00ff9f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    form {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ff9f33;
+      margin: 15px 0;
+      width: 100%;
+      max-width: 400px;
+    }
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin: 10px 0;
+      background: #222;
+      color: #fff;
+    }
+    button {
+      background: #00ff9f;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #00cc80;
+    }
+    hr {
+      border: 1px solid #00ff9f44;
+      width: 100%;
+      max-width: 400px;
+      margin: 20px 0;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐇 RABBIT XMD BOT PANEL</h1>
+
+  <form method="GET" action="/">
+    <label for="number">🔢 Enter WhatsApp Number:</label>
+    <input name="number" type="text" placeholder="e.g. 919XXXXXXXXX" required />
+    <button type="submit">🔗 Get Pair Code</button>
+  </form>
+
+  <hr/>
+
+  <form method="POST" action="/upload-dp" enctype="multipart/form-data">
+    <label for="photo">🖼️ Upload Profile Picture:</label>
+    <input type="file" name="photo" accept="image/*" required />
+    <button type="submit">📤 Upload & Set DP</button>
+  </form>
+
+  <div class="footer">Made with ❤️ by MR RABBIT</div>
+</body>
+</html>
